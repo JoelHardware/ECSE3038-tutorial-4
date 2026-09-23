@@ -47,3 +47,12 @@ def update_device(name: str, device: Device):
             readings[i] = device.model_dump()
             return readings[i]
     raise HTTPException(status_code=404, detail="No device called " + name)
+
+# Delete request to remove a device
+@app.delete("/devices/{name}")
+def delete_device(name: str):
+    for device in readings:
+        if device["name"] == name:
+            readings.remove(device)
+            return {"deleted": name}
+    raise HTTPException(status_code=404, detail="No device called " + name)
